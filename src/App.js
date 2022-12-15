@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 function App() {
   const [dataNow, setDataNow] = useState([]);
   const [dataPrev, setDataPrev] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [prevButtomVisible, setPrevButtonVisible] = useState(true);
+  const [nextButtomVisible, setNextButtonVisible] = useState(true);
+  const [slideIndex, setSlideIndex] = useState(0);
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -18,11 +21,13 @@ function App() {
       );
       const result = await response.json();
       const data = await result.ListExhibitionOfSeoulMOAInfo.row;
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].DP_END >= `${year}-${month}-${day}`) {
-          dataNow.push(data[i]);
-        } else {
-          dataPrev.push(data[i]);
+      if (dataNow.length === 0) {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].DP_END >= `${year}-${month}-${day}`) {
+            dataNow.push(data[i]);
+          } else {
+            dataPrev.push(data[i]);
+          }
         }
       }
       setIsLoading(false);
@@ -30,43 +35,71 @@ function App() {
     getData();
   }, []);
 
+  useEffect(() => {
+    if (slideIndex === 0) {
+      setPrevButtonVisible(false);
+    } else if (slideIndex === 5) {
+      setNextButtonVisible(false);
+    } else {
+      setPrevButtonVisible(true);
+      setNextButtonVisible(true);
+    }
+  }, [slideIndex]);
+
   return (
-    <div className="p-[30px] mx-[7px]">
+    <div>
       <NavBar />
       <div className="flex flex-row justify-center">
-        <div className="text-[60px] z-1">
+        <div className="text-[60px] h-[90vh]">
           서울시립미술관은 시대와 미술의 변화에 부응하고, 서로를 채우며 성장해
           가는 네트워크 미술관입니다.
         </div>
-        {
-          <img
-            src="http://sema.seoul.go.kr/common/imageView?FILE_PATH=%2Fex%2FEXI01%2F2022%2F&FILE_NM=20221212164005_684d745194544198b8d893e2994842bd_07e7b2e1f9b145d5ace2d8fd9ebfe15b"
-            className="w-[40%] object-cover"
-          />
-        }
       </div>
       <div>
-        <div>현재 전시 정보</div>
         {isLoading ? (
           <div>Loading...</div>
         ) : (
-          <div>
-            {dataNow.map((item) => (
-              <div key={item.DP_SEQ} className="w-full flex flex-row">
-                <img
-                  src={item.DP_MAIN_IMG}
-                  className="w-[300px] h-[400px] object-cover"
+          <div className="relative">
+            <div>
+              {prevButtomVisible && (
+                <FiChevronLeft
+                  size={40}
+                  color="gray"
+                  onClick={() => setSlideIndex(slideIndex - 1)}
+                  className="absolute top-[50%] left-[10%] z-[1] hover:bg-white rounded-lg"
                 />
-                <div>{item.DP_START}</div>
-                <div>{item.DP_END}</div>
+              )}
+              <div className="overflow-hidden">
+                <div className="flex flex-row w-[600vw]">
+                  {dataNow.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        transform: `translateX(-${slideIndex * 100}vw)`,
+                        transitionDuration: "1s",
+                      }}
+                      className="relative w-screen h-[100vh] bg-zinc-300"
+                    >
+                      <img
+                        src={item.DP_MAIN_IMG}
+                        className="absolute top-[50%] left-[30%] translate-x-[-50%] translate-y-[-50%] object-cover w-[300px] h-[400px]"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+              {nextButtomVisible && (
+                <FiChevronRight
+                  size={40}
+                  color="gray"
+                  onClick={() => setSlideIndex(slideIndex + 1)}
+                  className="absolute top-[50%] left-[90%] z-[1] hover:bg-white rounded-lg"
+                />
+              )}
+            </div>
           </div>
         )}
       </div>
-      <div>지난 전시 정보</div>
-      <div>찾아오는 길</div>
-      <div>홈페이지 정보</div>
     </div>
   );
 }

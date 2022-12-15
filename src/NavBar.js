@@ -1,9 +1,9 @@
 import React from "react";
 
 function NavBar() {
-  const textStyle = "ml-[18px] cursor-pointer hover:text-zinc-400";
+  const textStyle = "ml-[25px] cursor-pointer hover:text-zinc-400";
   return (
-    <div className="flex flex-row justify-between mb-[20px]">
+    <div className="flex flex-row justify-between m-[27px] mb-[20px]">
       <div>서울시립미술관 전시 정보</div>
       <div className="flex flex-row">
         <div className={textStyle}>Home</div>

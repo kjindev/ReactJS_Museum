@@ -13,3 +13,13 @@
 body {
   font-family: "Pretendard-Regular";
 }
+
+.showing {
+  transform: translateX(-100vw);
+  transition-duration: 1s;
+}
+
+.showing2 {
+  transform: translateX(-200vw);
+  transition-duration: 1s;
+}
