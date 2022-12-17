@@ -1,18 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import NavBar from "./NavBar";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiChevronsUp } from "react-icons/fi";
+import DPNow from "./DPNow";
+import Intro from "./Intro";
+import DPPrev from "./DPPrev";
+import Map from "./Map";
+import Information from "./Information";
 
 function App() {
   const [dataNow, setDataNow] = useState([]);
   const [dataPrev, setDataPrev] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [prevButtomVisible, setPrevButtonVisible] = useState(true);
-  const [nextButtomVisible, setNextButtonVisible] = useState(true);
-  const [slideIndex, setSlideIndex] = useState(0);
+
+  const scrollRef = useRef([]);
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
+
+  const [isWindow, setIsWindow] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      setIsWindow(true);
+    }
+  }, [isWindow]);
 
   useEffect(() => {
     async function getData() {
@@ -25,81 +37,66 @@ function App() {
         for (let i = 0; i < data.length; i++) {
           if (data[i].DP_END >= `${year}-${month}-${day}`) {
             dataNow.push(data[i]);
-          } else {
+          } else if (
+            data[i].DP_END < `${year}-${month}-${day}` &&
+            data[i].DP_END >= "2022-01-01"
+          ) {
             dataPrev.push(data[i]);
           }
         }
       }
+      console.log(dataPrev);
       setIsLoading(false);
     }
     getData();
   }, []);
 
-  useEffect(() => {
-    if (slideIndex === 0) {
-      setPrevButtonVisible(false);
-    } else if (slideIndex === 5) {
-      setNextButtonVisible(false);
-    } else {
-      setPrevButtonVisible(true);
-      setNextButtonVisible(true);
-    }
-  }, [slideIndex]);
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleScrollView = (event) => {
+    const name = event.target.innerText;
+    const category = {
+      Home: 0,
+      "전시 둘러보기": 1,
+      "지난 전시": 2,
+      방문하기: 3,
+      Information: 4,
+    };
+    scrollRef.current[category[name]].scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <div>
-      <NavBar />
-      <div className="flex flex-row justify-center">
-        <div className="text-[60px] h-[90vh]">
-          서울시립미술관은 시대와 미술의 변화에 부응하고, 서로를 채우며 성장해
-          가는 네트워크 미술관입니다.
-        </div>
-      </div>
-      <div>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <div className="relative">
-            <div>
-              {prevButtomVisible && (
-                <FiChevronLeft
-                  size={40}
-                  color="gray"
-                  onClick={() => setSlideIndex(slideIndex - 1)}
-                  className="absolute top-[50%] left-[10%] z-[1] hover:bg-white rounded-lg"
-                />
-              )}
-              <div className="overflow-hidden">
-                <div className="flex flex-row w-[600vw]">
-                  {dataNow.map((item, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        transform: `translateX(-${slideIndex * 100}vw)`,
-                        transitionDuration: "1s",
-                      }}
-                      className="relative w-screen h-[100vh] bg-zinc-300"
-                    >
-                      <img
-                        src={item.DP_MAIN_IMG}
-                        className="absolute top-[50%] left-[30%] translate-x-[-50%] translate-y-[-50%] object-cover w-[300px] h-[400px]"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-              {nextButtomVisible && (
-                <FiChevronRight
-                  size={40}
-                  color="gray"
-                  onClick={() => setSlideIndex(slideIndex + 1)}
-                  className="absolute top-[50%] left-[90%] z-[1] hover:bg-white rounded-lg"
-                />
-              )}
-            </div>
+      <NavBar handleScrollView={handleScrollView} />
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <div>
+          <div ref={(el) => (scrollRef.current[0] = el)}>
+            <Intro />
           </div>
-        )}
-      </div>
+          <div ref={(el) => (scrollRef.current[1] = el)}>
+            <DPNow dataNow={dataNow} />
+          </div>
+          <div ref={(el) => (scrollRef.current[2] = el)}>
+            <DPPrev dataPrev={dataPrev} />
+          </div>
+          <div ref={(el) => (scrollRef.current[3] = el)}>
+            <Map />
+          </div>
+          <div ref={(el) => (scrollRef.current[4] = el)}>
+            <Information />
+          </div>
+          <FiChevronsUp
+            onClick={handleScrollTop}
+            size={30}
+            color="white"
+            className="fixed top-[92%] left-[95%] bg-gray-500 hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
+          />{" "}
+        </div>
+      )}
     </div>
   );
 }

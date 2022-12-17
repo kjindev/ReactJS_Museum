@@ -10,16 +10,40 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "HSBombaram";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/HSBombaram.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: "Pretendard-Regular";
 }
 
-.showing {
-  transform: translateX(-100vw);
-  transition-duration: 1s;
+.title {
+  font-family: "HSBombaram";
 }
 
-.showing2 {
-  transform: translateX(-200vw);
-  transition-duration: 1s;
+.tooltip {
+  position: relative;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  position: absolute;
+  top: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+  transform: translateY(-50%);
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 5px 10px;
+  margin: 0 20px;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
