@@ -6,25 +6,20 @@ import Intro from "./components/Intro";
 import Prev from "./components/Prev";
 import Location from "./components/Location";
 import Information from "./components/Information";
-
+import { ScrollRestoration, useLoaderData } from "react-router-dom";
 export default function Home() {
   const [dataNow, setDataNow] = useState([]);
   const [dataPrev, setDataPrev] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const scrollRef = useRef([]);
+  const loader = useLoaderData();
+
+  console.log(loader);
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
-
-  const [isWindow, setIsWindow] = useState(false);
-
-  useEffect(() => {
-    if (typeof window !== undefined) {
-      setIsWindow(true);
-    }
-  }, [isWindow]);
 
   useEffect(() => {
     async function getData() {
