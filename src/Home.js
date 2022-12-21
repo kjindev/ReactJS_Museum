@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { FiChevronsUp } from "react-icons/fi";
 import NavBar from "./components/NavBar";
 import Now from "./components/Now";
@@ -6,16 +6,14 @@ import Intro from "./components/Intro";
 import Prev from "./components/Prev";
 import Location from "./components/Location";
 import Information from "./components/Information";
-import { ScrollRestoration, useLoaderData } from "react-router-dom";
+
 export default function Home() {
   const [dataNow, setDataNow] = useState([]);
   const [dataPrev, setDataPrev] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const scrollRef = useRef([]);
-  const loader = useLoaderData();
 
-  console.log(loader);
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
@@ -45,6 +43,10 @@ export default function Home() {
     getData();
   }, []);
 
+  useLayoutEffect(() => {
+    window.scroll(0, sessionStorage.y);
+  }, [isLoading]);
+
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -62,7 +64,7 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div onClick={() => sessionStorage.setItem("y", window.pageYOffset)}>
       <NavBar handleScrollView={handleScrollView} />
       {isLoading ? (
         <div>Loading...</div>

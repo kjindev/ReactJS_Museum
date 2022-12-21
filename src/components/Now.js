@@ -50,7 +50,7 @@ export default function DPNow({ dataNow }) {
                   {item.DP_START} - {item.DP_END}
                 </div>
                 <div className="flex flex-row items-center justify-center bg-zinc-300 w-[20%] text-center rounded-xl hover:cursor-pointer hover:bg-zinc-200"></div>
-                <Link to="NowDetail">자세히 보기</Link>
+                <Link to="/NowDetail">자세히 보기</Link>
               </div>
             </div>
           ))}
