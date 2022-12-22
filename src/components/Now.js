@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 export default function DPNow({ dataNow }) {
-  const [slideIndex, setSlideIndex] = useState(0);
+  const [slideIndex, setSlideIndex] = useState(
+    parseInt(sessionStorage.slideIndex)
+  );
   const [prevButtomVisible, setPrevButtonVisible] = useState(true);
   const [nextButtomVisible, setNextButtonVisible] = useState(true);
 
   useEffect(() => {
-    if (slideIndex === 0) {
+    if (slideIndex == 0) {
       setPrevButtonVisible(false);
-    } else if (slideIndex === 5) {
+    } else if (slideIndex == 5) {
       setNextButtonVisible(false);
     } else {
       setPrevButtonVisible(true);
@@ -18,13 +20,17 @@ export default function DPNow({ dataNow }) {
     }
   }, [slideIndex]);
 
+  useEffect(() => {
+    setSlideIndex(parseInt(sessionStorage.slideIndex));
+  }, []);
+
   return (
-    <div className="relative h-[100vh] ">
+    <div className="relative h-[100vh]">
       {prevButtomVisible && (
         <FiChevronLeft
           size={40}
           color="gray"
-          onClick={() => setSlideIndex(slideIndex - 1)}
+          onClick={() => setSlideIndex(parseInt(slideIndex - 1))}
           className="absolute top-[50%] left-[10%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
         />
       )}
@@ -43,14 +49,31 @@ export default function DPNow({ dataNow }) {
                 src={item.DP_MAIN_IMG}
                 className="absolute top-[50%] left-[30%] translate-x-[-50%] translate-y-[-50%] drop-shadow-2xl object-cover w-[25%] h-[50%]"
               />
-              <div className=" absolute top-[25%] left-[50%] w-[32%]">
-                <div className="title text-[40px]">{item.DP_NAME}</div>
-                <div>by {item.DP_ARTIST}</div>
+              <div className="absolute flex flex-col top-[28%] left-[49%] w-[35%]">
+                <div className="title text-5xl pb-7">{item.DP_NAME}</div>
                 <div>
-                  {item.DP_START} - {item.DP_END}
+                  <div className="pb-3">
+                    <span className="font-bold">ARTIST</span> | {item.DP_ARTIST}
+                  </div>
+                  <div className="pb-3">
+                    <span className="font-bold">장소</span> | {item.DP_PLACE}
+                  </div>
+                  <div className="pb-3">
+                    <span className="font-bold">기간</span> | {item.DP_START} ~{" "}
+                    {item.DP_END}
+                  </div>
                 </div>
-                <div className="flex flex-row items-center justify-center bg-zinc-300 w-[20%] text-center rounded-xl hover:cursor-pointer hover:bg-zinc-200"></div>
-                <Link to="/NowDetail">자세히 보기</Link>
+              </div>
+              <div className="absolute top-[65%] left-[49%]">
+                <Link
+                  to={`NowDetail/${index}`}
+                  className="border border-black p-3 px-7 hover:bg-black hover:text-white"
+                  onClick={() =>
+                    sessionStorage.setItem("slideIndex", slideIndex)
+                  }
+                >
+                  자세히 보기
+                </Link>
               </div>
             </div>
           ))}
@@ -60,7 +83,7 @@ export default function DPNow({ dataNow }) {
         <FiChevronRight
           size={40}
           color="gray"
-          onClick={() => setSlideIndex(slideIndex + 1)}
+          onClick={() => setSlideIndex(parseInt(slideIndex + 1))}
           className="absolute top-[50%] left-[90%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
         />
       )}

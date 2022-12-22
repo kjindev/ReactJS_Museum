@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useRef, useLayoutEffect } from "react";
 import { FiChevronsUp } from "react-icons/fi";
 import NavBar from "./components/NavBar";
 import Now from "./components/Now";
@@ -7,45 +7,12 @@ import Prev from "./components/Prev";
 import Location from "./components/Location";
 import Information from "./components/Information";
 
-export default function Home() {
-  const [dataNow, setDataNow] = useState([]);
-  const [dataPrev, setDataPrev] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
+export default function Home({ isLoading, dataNow, dataPrev }) {
   const scrollRef = useRef([]);
-
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  useEffect(() => {
-    async function getData() {
-      const response = await fetch(
-        `http://openapi.seoul.go.kr:8088/${process.env.REACT_APP_API_KEY}/json/ListExhibitionOfSeoulMOAInfo/1/50/`
-      );
-      const result = await response.json();
-      const data = await result.ListExhibitionOfSeoulMOAInfo.row;
-      if (dataNow.length === 0) {
-        for (let i = 0; i < data.length; i++) {
-          if (data[i].DP_END >= `${year}-${month}-${day}`) {
-            dataNow.push(data[i]);
-          } else if (
-            data[i].DP_END < `${year}-${month}-${day}` &&
-            data[i].DP_END >= "2022-01-01"
-          ) {
-            dataPrev.push(data[i]);
-          }
-        }
-      }
-      setIsLoading(false);
-    }
-    getData();
-  }, []);
 
   useLayoutEffect(() => {
     window.scroll(0, sessionStorage.y);
-  }, [isLoading]);
+  }, []);
 
   const handleScrollTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });

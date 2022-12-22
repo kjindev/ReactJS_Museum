@@ -14,7 +14,7 @@ export default function Location() {
   ];
 
   return (
-    <div className="w-[100%] h-[100vh] my-[70px] bg-gray-100 flex flex-row flex-wrap justify-center items-center">
+    <div className="w-[100%] h-[100vh] bg-gray-100 flex flex-row flex-wrap justify-center items-center">
       {museumName.map((item, index) => (
         <Link
           to={`Map/${index}`}
