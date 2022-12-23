@@ -7,7 +7,12 @@ import Prev from "./components/Prev";
 import Location from "./components/Location";
 import Information from "./components/Information";
 
-export default function Home({ isLoading, dataNow, dataPrev }) {
+export default function Home({
+  isLoading,
+  dataNow,
+  dataPrevBanner,
+  dataPrevBanner2,
+}) {
   const scrollRef = useRef([]);
 
   useLayoutEffect(() => {
@@ -21,11 +26,11 @@ export default function Home({ isLoading, dataNow, dataPrev }) {
   const handleScrollView = (event) => {
     const name = event.target.innerText;
     const category = {
-      Home: 0,
-      "전시 둘러보기": 1,
+      소개: 0,
+      "현재 전시": 1,
       "지난 전시": 2,
       방문하기: 3,
-      Information: 4,
+      "홈페이지 정보": 4,
     };
     scrollRef.current[category[name]].scrollIntoView({ behavior: "smooth" });
   };
@@ -44,7 +49,10 @@ export default function Home({ isLoading, dataNow, dataPrev }) {
             <Now dataNow={dataNow} />
           </div>
           <div ref={(el) => (scrollRef.current[2] = el)}>
-            <Prev dataPrev={dataPrev} />
+            <Prev
+              dataPrevBanner={dataPrevBanner}
+              dataPrevBanner2={dataPrevBanner2}
+            />
           </div>
           <div ref={(el) => (scrollRef.current[3] = el)}>
             <Location />
@@ -55,8 +63,8 @@ export default function Home({ isLoading, dataNow, dataPrev }) {
           <FiChevronsUp
             onClick={handleScrollTop}
             size={30}
-            color="white"
-            className="fixed top-[92%] left-[95%] bg-gray-500 hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
+            color="gray"
+            className="fixed top-[92%] left-[95%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
           />
         </div>
       )}

@@ -71,7 +71,7 @@ export default function Map() {
   return (
     <div className="w-[100vw] h-[100vh] p-10">
       <div className="flex">
-        <div className="w-3 h-22 bg-black mr-5"></div>
+        <div className="w-2 h-22 bg-black mr-5"></div>
         <div>
           <div className="text-5xl mb-2">{museumList[index].name}</div>
           <div className="text-2xl">{museumList[index].description}</div>

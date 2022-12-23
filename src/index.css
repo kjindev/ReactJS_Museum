@@ -18,10 +18,48 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "MaruBuri-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/MaruBuri-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.info {
+  font-family: "MaruBuri-Regular";
+}
+
 body {
   font-family: "Pretendard-Regular";
 }
 
 .title {
   font-family: "HSBombaram";
+}
+
+.image-box {
+  animation: leftmoving 20s linear infinite;
+}
+
+@keyframes leftmoving {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-50%, 0);
+  }
+}
+
+.image-box2 {
+  animation: rigthmoving 20s linear infinite;
+}
+
+@keyframes rigthmoving {
+  0% {
+    transform: translate(-50%, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
 }
