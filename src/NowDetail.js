@@ -16,6 +16,8 @@ function DPNowDetail({ dataNow }) {
     dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("<strong>", "");
     dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("</strong>", "");
     dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("</span>", "");
+    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("&lt;", "");
+    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("&gt;", "");
     dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll(
       '<p dir="ltr">',
       ""
@@ -28,7 +30,6 @@ function DPNowDetail({ dataNow }) {
       '<span style="font-size: 18px; color: rgb(184, 49, 47);">',
       ""
     );
-    console.log(dataNow[index]);
   }
 
   return (

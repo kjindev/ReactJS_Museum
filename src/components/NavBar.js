@@ -6,11 +6,10 @@ function NavBar({ handleScrollView }) {
     <div className="text-sm fixed z-[2] w-[100%] h-12 flex flex-row justify-between py-3 px-7 bg-white">
       <div className="text-base">서울시립미술관 전시안내</div>
       <div className="flex flex-row" onClick={handleScrollView}>
-        <div className={textStyle}>소개</div>
+        <div className={textStyle}>MAIN</div>
         <div className={textStyle}>현재 전시</div>
         <div className={textStyle}>지난 전시</div>
         <div className={textStyle}>방문하기</div>
-        <div className={textStyle}>홈페이지 정보</div>
       </div>
     </div>
   );

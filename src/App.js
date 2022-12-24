@@ -45,10 +45,7 @@ function App() {
         for (let i = 0; i < data.length; i++) {
           if (data[i].DP_END >= `${year}-${month}-${day}`) {
             dataNow.push(data[i]);
-          } else if (
-            data[i].DP_END < `${year}-${month}-${day}` &&
-            data[i].DP_END >= "2022-01-01"
-          ) {
+          } else {
             dataPrev.push(data[i]);
           }
         }
@@ -67,7 +64,6 @@ function App() {
           <Home
             isLoading={isLoading}
             dataNow={dataNow}
-            dataPrev={dataPrev}
             dataPrevBanner={dataPrevBanner}
             dataPrevBanner2={dataPrevBanner2}
           />
@@ -77,7 +73,10 @@ function App() {
         path="/NowDetail/:index"
         element={<NowDetail dataNow={dataNow} />}
       />
-      <Route path="/PrevDetail" element={<PrevDetail />} />
+      <Route
+        path="/PrevDetail"
+        element={<PrevDetail dataPrev={dataPrev} isLoading={isLoading} />}
+      />
       <Route path="/Map/:index" element={<Map />} />
     </Routes>
   );

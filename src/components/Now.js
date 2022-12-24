@@ -9,8 +9,6 @@ export default function DPNow({ dataNow }) {
   const [prevButtomVisible, setPrevButtonVisible] = useState(true);
   const [nextButtomVisible, setNextButtonVisible] = useState(true);
 
-  console.log(dataNow);
-
   useEffect(() => {
     if (slideIndex == 0) {
       setPrevButtonVisible(false);

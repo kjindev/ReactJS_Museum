@@ -26,11 +26,10 @@ export default function Home({
   const handleScrollView = (event) => {
     const name = event.target.innerText;
     const category = {
-      소개: 0,
+      MAIN: 0,
       "현재 전시": 1,
       "지난 전시": 2,
       방문하기: 3,
-      "홈페이지 정보": 4,
     };
     scrollRef.current[category[name]].scrollIntoView({ behavior: "smooth" });
   };
@@ -57,7 +56,7 @@ export default function Home({
           <div ref={(el) => (scrollRef.current[3] = el)}>
             <Location />
           </div>
-          <div ref={(el) => (scrollRef.current[4] = el)}>
+          <div>
             <Information />
           </div>
           <FiChevronsUp
