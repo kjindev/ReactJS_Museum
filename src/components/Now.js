@@ -12,7 +12,7 @@ export default function DPNow({ dataNow }) {
   useEffect(() => {
     if (slideIndex == 0) {
       setPrevButtonVisible(false);
-    } else if (slideIndex == 5) {
+    } else if (slideIndex == dataNow.length - 1) {
       setNextButtonVisible(false);
     } else {
       setPrevButtonVisible(true);
@@ -39,7 +39,7 @@ export default function DPNow({ dataNow }) {
           <div className="w-2 h-12 bg-black mr-5"></div>
           <div className="text-5xl">현재 전시</div>
         </div>
-        <div className="flex flex-row w-[600vw]">
+        <div className={`flex flex-row w-[${dataNow.length * 100}vw]`}>
           {dataNow.map((item, index) => (
             <div
               key={index}
