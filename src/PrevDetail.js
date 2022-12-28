@@ -1,5 +1,7 @@
 import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { BiSearch } from "react-icons/bi";
+import { FiChevronLeft, FiClock } from "react-icons/fi";
 
 export default function PrevDetail({ dataPrev }) {
   const [searchText, setSearchText] = useState("");
@@ -23,7 +25,7 @@ export default function PrevDetail({ dataPrev }) {
   const [end, setEnd] = useState([2023, 12]);
 
   const { pathname } = useLocation();
-  const enterRef = useRef();
+
   const dataRef = useRef([]);
   const dataArr = [];
   for (let i = 0; i < 8; i++) {
@@ -59,7 +61,6 @@ export default function PrevDetail({ dataPrev }) {
         endDate > `${end[0]}-${end[1]}`
       ) {
         dataRef.current.children[i].classList.add("hidden");
-        console.log("엥");
       } else {
         dataRef.current.children[i].classList.remove("hidden");
       }
@@ -76,7 +77,6 @@ export default function PrevDetail({ dataPrev }) {
         endDate > `${end[0]}-${end[1]}`
       ) {
         dataRef.current.children[i].classList.add("hidden");
-        console.log("엥");
       } else {
         dataRef.current.children[i].classList.remove("hidden");
       }
@@ -103,19 +103,55 @@ export default function PrevDetail({ dataPrev }) {
     }
   };
 
-  const handleKeydown = () => {
-    console.log("enter");
-  };
-
   return (
     <div className="flex w-[100%] h-[100vh]">
-      <div className="bg-black w-[20%] h-[100%]"></div>
-      <div className="relative w-[90%]">
-        <div className="flex">
-          <div className="w-2 h-12 bg-black mr-5"></div>
-          <div className="text-5xl">지난 전시</div>
+      <div className="bg-black w-[16%] h-[100%] fixed p-3">
+        <Link to="/">
+          <div className="flex items-center mb-3">
+            <FiChevronLeft
+              color="white"
+              size={20}
+              className="hover:cursor-pointer"
+            />
+            <div className="text-white ml-2">홈으로 돌아가기</div>
+          </div>
+        </Link>
+        <div className="flex items-center">
+          <FiClock color="white" size={20} />
+          <div className="text-white ml-2">전시 기간</div>
         </div>
-        <div className="bg-gray-200 my-7 p-5 px-7">
+        <div className="mb-3">
+          <div className="text-white ml-7">| 전체</div>
+          <div className="text-white brightness-50 ml-7">| 2022</div>
+          <div className="text-white brightness-50 ml-7">| 2021</div>
+        </div>
+        <div className="flex items-center">
+          <form className="flex items-center" onSubmit={handleSubmit}>
+            <BiSearch
+              size={20}
+              color="white"
+              className="hover:cursor-pointer"
+            />
+            <input
+              value={searchText}
+              onChange={handleTextChange}
+              placeholder="검색하기"
+              className="w-[100%] h-7 pl-3 py-4 mx-2 bg-black border border-white text-white"
+            />
+          </form>
+        </div>
+      </div>
+      <div className="w-[84%] ml-[16%] p-12">
+        <div className="flex w-[100%]">
+          <div className="w-2 h-[5.2rem] bg-black mr-5"></div>
+          <div className="flex flex-col">
+            <div className="text-5xl my-1">지난 전시</div>
+            <div className="text-lg">
+              서울시립미술관의 지난 전시를 확인해보세요
+            </div>
+          </div>
+        </div>
+        {/*<div className="bg-gray-200 my-7 p-5 px-7">
           <div className="font-semibold text-xl">검색 필터</div>
           <form onSubmit={handleSubmit} className="mt-5">
             <span className="font-bold">이름 |</span>
@@ -135,7 +171,6 @@ export default function PrevDetail({ dataPrev }) {
                 <select
                   className="p-2 px-3 text-center ml-3"
                   name="year"
-                  ref={enterRef}
                   defaultValue={2021}
                 >
                   <option>2022</option>
@@ -181,9 +216,9 @@ export default function PrevDetail({ dataPrev }) {
               검색
             </button>
           </div>
-        </div>
+        </div>*/}
         <div
-          className="absolute left-[50%] translate-x-[-50%] w-[100%] h-[100%] flex flex-wrap justify-start "
+          className="w-[100%] h-[50%] flex flex-wrap justify-start "
           ref={dataRef}
         >
           {dataLoading ? (

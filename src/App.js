@@ -4,6 +4,7 @@ import Home from "./Home";
 import NowDetail from "./NowDetail";
 import PrevDetail from "./PrevDetail";
 import Map from "./Map";
+import { FiChevronsUp } from "react-icons/fi";
 
 function App() {
   const [dataNow, setDataNow] = useState([]);
@@ -56,29 +57,41 @@ function App() {
     getData();
   }, []);
 
+  const handleScrollTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <Home
-            isLoading={isLoading}
-            dataNow={dataNow}
-            dataPrevBanner={dataPrevBanner}
-            dataPrevBanner2={dataPrevBanner2}
-          />
-        }
+    <div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              isLoading={isLoading}
+              dataNow={dataNow}
+              dataPrevBanner={dataPrevBanner}
+              dataPrevBanner2={dataPrevBanner2}
+            />
+          }
+        />
+        <Route
+          path="/NowDetail/:index"
+          element={<NowDetail dataNow={dataNow} />}
+        />
+        <Route
+          path="/PrevDetail"
+          element={<PrevDetail dataPrev={dataPrev} isLoading={isLoading} />}
+        />
+        <Route path="/Map/:index" element={<Map />} />
+      </Routes>
+      <FiChevronsUp
+        onClick={handleScrollTop}
+        size={30}
+        color="gray"
+        className="fixed top-[92%] left-[95%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
       />
-      <Route
-        path="/NowDetail/:index"
-        element={<NowDetail dataNow={dataNow} />}
-      />
-      <Route
-        path="/PrevDetail"
-        element={<PrevDetail dataPrev={dataPrev} isLoading={isLoading} />}
-      />
-      <Route path="/Map/:index" element={<Map />} />
-    </Routes>
+    </div>
   );
 }
 

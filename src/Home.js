@@ -19,10 +19,6 @@ export default function Home({
     window.scroll(0, sessionStorage.y);
   }, []);
 
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const handleScrollView = (event) => {
     const name = event.target.innerText;
     const category = {
@@ -59,12 +55,6 @@ export default function Home({
           <div>
             <Information />
           </div>
-          <FiChevronsUp
-            onClick={handleScrollTop}
-            size={30}
-            color="gray"
-            className="fixed top-[92%] left-[95%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
-          />
         </div>
       )}
     </div>

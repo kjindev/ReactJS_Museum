@@ -25,7 +25,7 @@ export default function DPNow({ dataNow }) {
   }, []);
 
   return (
-    <div className="relative h-[100vh]">
+    <div className="relative w-[100%] h-[100vh]">
       {prevButtomVisible && (
         <FiChevronLeft
           size={40}
@@ -39,49 +39,52 @@ export default function DPNow({ dataNow }) {
           <div className="w-2 h-12 bg-black mr-5"></div>
           <div className="text-5xl">현재 전시</div>
         </div>
-        <div className={`flex flex-row w-[${dataNow.length * 100}vw]`}>
-          {dataNow.map((item, index) => (
-            <div
-              key={index}
-              style={{
-                transform: `translateX(-${slideIndex * 100}vw)`,
-                transitionDuration: "1s",
-              }}
-              className="relative w-[100vw] h-[100vh]"
-            >
-              <img
-                src={item.DP_MAIN_IMG}
-                className="absolute top-[50%] left-[30%] translate-x-[-50%] translate-y-[-50%] drop-shadow-2xl object-cover w-[25%] h-[50%]"
-              />
-              <div className="absolute flex flex-col top-[28%] left-[49%] w-[35%]">
-                <div className="title text-5xl pb-7">{item.DP_NAME}</div>
-                <div>
-                  <div className="pb-3">
-                    <span className="font-bold">ARTIST</span> | {item.DP_ARTIST}
-                  </div>
-                  <div className="pb-3">
-                    <span className="font-bold">장소</span> | {item.DP_PLACE}
-                  </div>
-                  <div className="pb-3">
-                    <span className="font-bold">기간</span> | {item.DP_START} ~{" "}
-                    {item.DP_END}
+        {dataNow && (
+          <div className="flex flex-row w-[700vw]">
+            {dataNow.map((item, index) => (
+              <div
+                key={index}
+                style={{
+                  transform: `translateX(-${slideIndex * 100}vw)`,
+                  transitionDuration: "1s",
+                }}
+                className="relative w-[100vw] h-[100vh]"
+              >
+                <img
+                  src={item.DP_MAIN_IMG}
+                  className="absolute top-[50%] left-[30%] translate-x-[-50%] translate-y-[-50%] drop-shadow-2xl object-cover w-[25%] h-[50%]"
+                />
+                <div className="absolute flex flex-col top-[28%] left-[49%] w-[35%]">
+                  <div className="title text-5xl pb-7">{item.DP_NAME}</div>
+                  <div>
+                    <div className="pb-3">
+                      <span className="font-bold">ARTIST</span> |{" "}
+                      {item.DP_ARTIST}
+                    </div>
+                    <div className="pb-3">
+                      <span className="font-bold">장소</span> | {item.DP_PLACE}
+                    </div>
+                    <div className="pb-3">
+                      <span className="font-bold">기간</span> | {item.DP_START}{" "}
+                      ~ {item.DP_END}
+                    </div>
                   </div>
                 </div>
+                <div className="absolute top-[65%] left-[49%]">
+                  <Link
+                    to={`NowDetail/${index}`}
+                    className="border border-black p-3 px-7 hover:bg-black hover:text-white"
+                    onClick={() =>
+                      sessionStorage.setItem("slideIndex", slideIndex)
+                    }
+                  >
+                    자세히 보기
+                  </Link>
+                </div>
               </div>
-              <div className="absolute top-[65%] left-[49%]">
-                <Link
-                  to={`NowDetail/${index}`}
-                  className="border border-black p-3 px-7 hover:bg-black hover:text-white"
-                  onClick={() =>
-                    sessionStorage.setItem("slideIndex", slideIndex)
-                  }
-                >
-                  자세히 보기
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
       {nextButtomVisible && (
         <FiChevronRight
