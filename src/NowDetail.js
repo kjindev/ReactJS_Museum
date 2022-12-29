@@ -1,43 +1,33 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { BiCaretLeft } from "react-icons/bi";
 
 function DPNowDetail({ dataNow }) {
   const { index } = useParams();
+  const [infoText, setInfoText] = useState();
 
   useLayoutEffect(() => {
     window.scroll(0, 0);
   }, []);
 
-  if (dataNow[index] !== undefined) {
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("<p>", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("</p>", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("&nbsp;", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("<br>", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("<strong>", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("</strong>", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("</span>", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("&lt;", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll("&gt;", "");
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll(
-      '<p dir="ltr">',
-      ""
-    );
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll(
-      '<span style="font-size: 18px;">',
-      ""
-    );
-    dataNow[index].DP_INFO = dataNow[index].DP_INFO.replaceAll(
-      '<span style="font-size: 18px; color: rgb(184, 49, 47);">',
-      ""
-    );
-  }
-
   return (
-    <div className="p-7">
+    <div>
+      <div className="bg-black w-[16%] h-[100%] fixed pb-3">
+        <Link to="/">
+          <div className="flex items-center my-3">
+            <BiCaretLeft
+              color="white"
+              size={27}
+              className="hover:cursor-pointer ml-2 mr-1"
+            />
+            <div className="text-white">홈으로 돌아가기</div>
+          </div>
+        </Link>
+      </div>
       {dataNow[index] === undefined ? (
         <div>Loading...</div>
       ) : (
-        <div className="w-[100%] h-[100vh] p-5">
+        <div className="w-[84%] h-[100vh] p-7 ml-[16%]">
           <div className="flex">
             <div className="w-2 h-[5.5rem] bg-black mr-5"></div>
             <div className="flex flex-col">
@@ -53,7 +43,7 @@ function DPNowDetail({ dataNow }) {
               />
             </div>
             <div className="flex flex-col w-[60%] p-7">
-              <div className="my-3 text-xl">
+              <div className="my-3">
                 <div className="mb-1">
                   <span className="font-bold">전시 장소</span> |{" "}
                   {dataNow[index].DP_PLACE}
@@ -71,7 +61,7 @@ function DPNowDetail({ dataNow }) {
                   {dataNow[index].DP_ART_CNT}
                 </div>
               </div>
-              <div className="text-lg text-justify">
+              <div className="text-justify">
                 {dataNow[index].DP_INFO}{" "}
                 <span className="italic text-gray-500 hover:text-indigo-500">
                   <a href={dataNow[index].DP_LNK} target="_blank">

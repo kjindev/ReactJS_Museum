@@ -1,36 +1,17 @@
 import React, { useState, useLayoutEffect, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { BiSearch } from "react-icons/bi";
-import { FiChevronLeft, FiClock } from "react-icons/fi";
+import { BiCaretLeft, BiSearch } from "react-icons/bi";
+import { BsXCircle } from "react-icons/bs";
 
 export default function PrevDetail({ dataPrev }) {
   const [searchText, setSearchText] = useState("");
   const [submitText, setSubmitText] = useState("");
   const [dataLoading, setdataLoading] = useState(true);
-  const monthList = [
-    "01",
-    "02",
-    "03",
-    "04",
-    "05",
-    "06",
-    "07",
-    "08",
-    "09",
-    "10",
-    "11",
-    "12",
-  ];
-  const [start, setStart] = useState([2021, 1]);
-  const [end, setEnd] = useState([2023, 12]);
-
   const { pathname } = useLocation();
-
   const dataRef = useRef([]);
-  const dataArr = [];
-  for (let i = 0; i < 8; i++) {
-    dataArr[i] = dataPrev[i];
-  }
+  const modalRef = useRef();
+  const [modalText, setModalText] = useState([]);
+  const [modalTextInfo, setModalTextInfo] = useState();
 
   useEffect(() => {
     setdataLoading(false);
@@ -40,12 +21,39 @@ export default function PrevDetail({ dataPrev }) {
     window.scroll(0, 0);
   }, []);
 
+  const handleModal = (event) => {
+    if (event.target.parentElement.dataset.name !== undefined) {
+      setModalText([
+        event.target.parentElement.dataset.name,
+        event.target.parentElement.dataset.artist,
+        event.target.parentElement.dataset.img,
+        event.target.parentElement.dataset.place,
+        event.target.parentElement.dataset.start,
+        event.target.parentElement.dataset.end,
+        event.target.parentElement.dataset.artpart,
+        event.target.parentElement.dataset.artcnt,
+        event.target.parentElement.dataset.link,
+      ]);
+      if (event.target.parentElement.dataset.info.length > 700) {
+        setModalTextInfo(
+          event.target.parentElement.dataset.info.substr(0, 700) + "..."
+        );
+      }
+      if (modalTextInfo.includes("<")) {
+        console.log(modalTextInfo.split("<"));
+      }
+      modalRef.current.classList.remove("hidden");
+    }
+  };
+
+  const handleModalCloseBtn = () => {
+    modalRef.current.classList.add("hidden");
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setSubmitText(searchText);
     for (let i = 0; i < dataPrev.length; i++) {
-      const startDate = dataRef.current.children[i].children[3].innerText;
-      const endDate = dataRef.current.children[i].children[4].innerText;
       dataRef.current.children[i].classList.remove("hidden");
       if (
         dataRef.current.children[i].innerText.includes(submitText) === false &&
@@ -56,169 +64,107 @@ export default function PrevDetail({ dataPrev }) {
         dataRef.current.children[i].classList.add("hidden");
       } else if (submitText === "") {
         dataRef.current.children[i].classList.remove("hidden");
-      } else if (
-        startDate < `${start[0]}-${start[1]}` ||
-        endDate > `${end[0]}-${end[1]}`
-      ) {
-        dataRef.current.children[i].classList.add("hidden");
-      } else {
-        dataRef.current.children[i].classList.remove("hidden");
       }
     }
   };
-  /*
-  const handleClick = () => {
-    for (let i = 0; i < dataPrev.length; i++) {
-      const startDate = dataRef.current.children[i].children[3].innerText;
-      const endDate = dataRef.current.children[i].children[4].innerText;
-      dataRef.current.children[i].classList.remove("hidden");
-      if (
-        startDate < `${start[0]}-${start[1]}` ||
-        endDate > `${end[0]}-${end[1]}`
-      ) {
-        dataRef.current.children[i].classList.add("hidden");
-      } else {
-        dataRef.current.children[i].classList.remove("hidden");
-      }
-    }
-  };
-*/
+
   const handleTextChange = (event) => {
     setSearchText(event.target.value);
   };
 
-  const handleStartClick = (event) => {
-    if (event.target.name === "year") {
-      setStart([event.target.value, start[1]]);
-    } else if (event.target.name === "month") {
-      setStart([start[0], event.target.value]);
-    }
-  };
-
-  const handleEndClick = (event) => {
-    if (event.target.name === "year") {
-      setEnd([event.target.value, end[1]]);
-    } else if (event.target.name === "month") {
-      setEnd([end[0], event.target.value]);
-    }
-  };
-
   return (
     <div className="flex w-[100%] h-[100vh]">
-      <div className="bg-black w-[16%] h-[100%] fixed p-3">
+      <div
+        ref={modalRef}
+        className="w-[84%] h-[100%] ml-[16%] fixed bg-black opacity-90 z-[1] hidden"
+      >
+        <BsXCircle
+          onClick={handleModalCloseBtn}
+          size={25}
+          color="white"
+          className="absolute top-[5%] left-[93%] z-[2] hover:cursor-pointer"
+        />
+        <div className="flex p-10">
+          <div>
+            <div className="flex mb-5">
+              <div className="w-2 h-[4.2rem] bg-white mr-4"></div>
+              <div>
+                <div className="z-[2] text-white text-4xl mb-1">
+                  {modalText[0]}
+                </div>
+                <div className="z-[2] text-white text-base">{modalText[1]}</div>
+              </div>
+            </div>
+            <div className="z-[2] text-white ml-6">
+              전시 장소 | {modalText[3]}
+            </div>
+            <div className="z-[2] text-white ml-6">
+              전시 기간 | {modalText[4]} ~ {modalText[5]}
+            </div>
+            <div className="z-[2] text-white ml-6">
+              작품 장르 | {modalText[6]}
+            </div>
+            <div className="z-[2] text-white ml-6">
+              작품 개수 | {modalText[7]}
+            </div>
+            <div className="flex">
+              <div className="z-[2] text-white mt-5 ml-6 text-justify">
+                {modalTextInfo}
+                <a
+                  href={modalText[8]}
+                  target="_blank"
+                  className="italic text-gray-500 hover:text-indigo-500"
+                >
+                  전시 상세 홈페이지
+                </a>
+              </div>
+              <img
+                src={modalText[2]}
+                className="h-[300px] z-[2] mt-5 ml-6 bg-black"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-black w-[16%] h-[100%] fixed pb-3">
         <Link to="/">
-          <div className="flex items-center mb-3">
-            <FiChevronLeft
+          <div className="flex items-center my-3">
+            <BiCaretLeft
               color="white"
-              size={20}
-              className="hover:cursor-pointer"
+              size={27}
+              className="hover:cursor-pointer ml-2 mr-1"
             />
-            <div className="text-white ml-2">홈으로 돌아가기</div>
+            <div className="text-white">홈으로 돌아가기</div>
           </div>
         </Link>
         <div className="flex items-center">
-          <FiClock color="white" size={20} />
-          <div className="text-white ml-2">전시 기간</div>
-        </div>
-        <div className="mb-3">
-          <div className="text-white ml-7">| 전체</div>
-          <div className="text-white brightness-50 ml-7">| 2022</div>
-          <div className="text-white brightness-50 ml-7">| 2021</div>
-        </div>
-        <div className="flex items-center">
           <form className="flex items-center" onSubmit={handleSubmit}>
             <BiSearch
-              size={20}
+              size={25}
               color="white"
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer ml-3 mr-2"
             />
             <input
               value={searchText}
               onChange={handleTextChange}
               placeholder="검색하기"
-              className="w-[100%] h-7 pl-3 py-4 mx-2 bg-black border border-white text-white"
+              className="w-[100%] h-7 py-4 px-3 mr-5 bg-black border border-white text-white"
             />
           </form>
         </div>
       </div>
       <div className="w-[84%] ml-[16%] p-12">
-        <div className="flex w-[100%]">
+        <div className="flex w-[100%] mb-5 ml-5">
           <div className="w-2 h-[5.2rem] bg-black mr-5"></div>
           <div className="flex flex-col">
             <div className="text-5xl my-1">지난 전시</div>
             <div className="text-lg">
-              서울시립미술관의 지난 전시를 확인해보세요
+              2022년 한 해 동안의 서울시립미술관 전시를 확인해보세요
             </div>
           </div>
         </div>
-        {/*<div className="bg-gray-200 my-7 p-5 px-7">
-          <div className="font-semibold text-xl">검색 필터</div>
-          <form onSubmit={handleSubmit} className="mt-5">
-            <span className="font-bold">이름 |</span>
-            <input
-              placeholder="작품 및 아티스트 이름으로 검색해보세요"
-              type="text"
-              value={searchText}
-              onChange={handleTextChange}
-              className="w-[45%] p-2 px-3 mx-5"
-            />
-          </form>
-          <div className="flex justify-between">
-            <div className="mt-5">
-              <span className="font-bold">기간 |</span>
-              <span className="pl-5" onClick={handleStartClick}>
-                <span>전시 시작일</span>
-                <select
-                  className="p-2 px-3 text-center ml-3"
-                  name="year"
-                  defaultValue={2021}
-                >
-                  <option>2022</option>
-                  <option>2021</option>
-                </select>
-                <span className="ml-2">년</span>
-                <select
-                  className="p-2 px-3 text-center ml-3"
-                  name="month"
-                  defaultValue={1}
-                >
-                  {monthList.map((item, index) => (
-                    <option key={index}>{item}</option>
-                  ))}
-                </select>
-                <span className="ml-2">월</span>
-              </span>
-              <span className="pl-5" onClick={handleEndClick}>
-                <span>전시 종료일</span>
-                <select
-                  className="p-2 px-3 text-center ml-3"
-                  name="year"
-                  defaultValue={2023}
-                >
-                  <option>2023</option>
-                  <option>2022</option>
-                  <option>2021</option>
-                </select>
-                <span className="ml-2">년</span>
-                <select
-                  className="p-2 px-3 text-center ml-3"
-                  name="month"
-                  defaultValue={12}
-                >
-                  {monthList.map((item, index) => (
-                    <option key={index}>{item}</option>
-                  ))}
-                </select>
-                <span className="ml-2">월</span>
-              </span>
-            </div>
-            <button type="submit" className="bg-black mt-5 px-7 text-white">
-              검색
-            </button>
-          </div>
-        </div>*/}
         <div
-          className="w-[100%] h-[50%] flex flex-wrap justify-start "
+          className="w-[100%] h-[50%] flex flex-wrap justify-start"
           ref={dataRef}
         >
           {dataLoading ? (
@@ -227,13 +173,24 @@ export default function PrevDetail({ dataPrev }) {
             dataPrev.map((item, index) => (
               <div
                 key={index}
-                className="m-3 w-[20%] h-[100%] flex flex-col hover:cursor-pointer drop-shadow-xl"
+                onClick={handleModal}
+                data-name={item.DP_NAME}
+                data-artist={item.DP_ARTIST}
+                data-img={item.DP_MAIN_IMG}
+                data-place={item.DP_PLACE}
+                data-start={item.DP_START}
+                data-end={item.DP_END}
+                data-artpart={item.DP_ART_PART}
+                data-artcnt={item.DP_ART_CNT}
+                data-info={item.DP_INFO}
+                data-link={item.DP_LNK}
+                className="px-5 py-3 w-[23%] h-[100%] flex flex-col hover:cursor-pointer hover:scale-105 duration-100 drop-shadow-lg"
               >
                 <img
                   src={item.DP_MAIN_IMG}
-                  className="w-[90%] h-[70%] p-2 object-cover bg-white"
+                  className="w-[100%] h-[70%] p-2 object-cover bg-white"
                 />
-                <div className="p-2">{item.DP_NAME}</div>
+                <div className="m-2 mt-3">{item.DP_NAME}</div>
                 <div className="hidden">{item.DP_ARTIST}</div>
                 <div className="hidden">{item.DP_START}</div>
                 <div className="hidden">{item.DP_END}</div>

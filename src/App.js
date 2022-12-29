@@ -44,6 +44,26 @@ function App() {
       const data = await result.ListExhibitionOfSeoulMOAInfo.row;
       if (dataNow.length === 0) {
         for (let i = 0; i < data.length; i++) {
+          if (data !== undefined) {
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("<p>", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("</p>", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("&nbsp;", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("<br>", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("<strong>", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("</strong>", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("</span>", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("&lt;", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll("&gt;", "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll('<p dir="ltr">', "");
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll(
+              '<span style="font-size: 18px;">',
+              ""
+            );
+            data[i].DP_INFO = data[i].DP_INFO.replaceAll(
+              '<span style="font-size: 18px; color: rgb(184, 49, 47);">',
+              ""
+            );
+          }
           if (data[i].DP_END >= `${year}-${month}-${day}`) {
             dataNow.push(data[i]);
           } else {
@@ -56,10 +76,6 @@ function App() {
     }
     getData();
   }, []);
-
-  const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <div>
@@ -83,14 +99,9 @@ function App() {
           path="/PrevDetail"
           element={<PrevDetail dataPrev={dataPrev} isLoading={isLoading} />}
         />
+
         <Route path="/Map/:index" element={<Map />} />
       </Routes>
-      <FiChevronsUp
-        onClick={handleScrollTop}
-        size={30}
-        color="gray"
-        className="fixed top-[92%] left-[95%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
-      />
     </div>
   );
 }
