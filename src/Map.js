@@ -5,6 +5,7 @@ import { BiCaretLeft, BiMap, BiCheckSquare } from "react-icons/bi";
 export default function Map() {
   const { index } = useParams();
   const mapRef = useRef(null);
+  const infoRef = useRef();
 
   const museumList = {
     0: {
@@ -133,6 +134,16 @@ export default function Map() {
     },
   };
 
+  const handleInfoClick = () => {
+    infoRef.current.classList.remove("hidden");
+    mapRef.current.classList.add("hidden");
+  };
+
+  const handleMapClick = () => {
+    mapRef.current.classList.remove("hidden");
+    infoRef.current.classList.add("hidden");
+  };
+
   useEffect(() => {
     const { naver } = window;
     if (mapRef.current && naver) {
@@ -164,60 +175,72 @@ export default function Map() {
             <div className="text-white">홈으로 돌아가기</div>
           </div>
         </Link>
-        <div className="flex items-center my-3">
-          <BiCheckSquare
-            color="white"
-            size={27}
-            className="hover:cursor-pointer ml-2 mr-1"
-          />
+        <div
+          onClick={handleInfoClick}
+          className="flex items-center my-3 hover:cursor-pointer"
+        >
+          <BiCheckSquare color="white" size={27} className="ml-2 mr-1" />
           <div className="text-white ">이용 안내</div>
         </div>
-        <div className="flex items-center my-3">
-          <BiMap
-            color="white"
-            size={27}
-            className="hover:cursor-pointer ml-2 mr-1"
-          />
-          <div className="text-white ">찾아오는 길</div>
+        <div
+          onClick={handleMapClick}
+          className="flex items-center my-3 hover:cursor-pointer"
+        >
+          <BiMap color="white" size={27} className="ml-2 mr-1" />
+          <div className="text-white ">지도</div>
         </div>
       </div>
-      <div className=" p-10 ml-[16%]">
+      <div className="p-10 ml-[16%]">
         <div className="flex">
           <div className="w-2 h-22 bg-black mr-5"></div>
           <div>
-            <div className="text-5xl mb-2">{museumList[index].name}</div>
-            <div className="text-xl">{museumList[index].description}</div>
+            <div className="text-4xl mb-2">{museumList[index].name}</div>
+            <div className="text-base">{museumList[index].description}</div>
           </div>
         </div>
-        <div className="flex flex-col">
-          <div className="mt-9 flex">
-            <img
-              src={museumList[index].img}
-              className="w-[500px] h-[500px] object-cover"
-            />
-            <div className="flex flex-col">
-              <div>이용시간</div>
-              <div>화요일 - 금요일</div>
-              <div>{museumList[index].weekday}</div>
-              <div>토요일, 일요일, 공휴일 </div>
-              <div>하절기(3-10월) {museumList[index].weekend_summer}</div>
-              <div>동절기(11-2월) {museumList[index].weekend_winter}</div>
-              <div>문화가 있는 날</div>
-              <div>{museumList[index].culture}</div>
-              <div>휴관</div>
-              <div>{museumList[index].closed_day}</div>
-              <div>정기휴관</div>
-              <div>{museumList[index].regular_closing_day}</div>
-              <div>입장안내</div>
-              <div>{museumList[index].opening_hour}</div>
-              <div>{museumList[index].admission}</div>
-              <div>대표번호</div>
-              <div>{museumList[index].phone}</div>
+        <div className="mt-9 flex" ref={infoRef}>
+          <img
+            src={museumList[index].img}
+            className="w-[500px] h-[500px] object-cover bg-white p-2 drop-shadow-lg"
+          />
+          <div>이용 시간</div>
+          <div>
+            <div>화요일 - 금요일</div>
+            <div>{museumList[index].weekday}</div>
+          </div>
+          <div>
+            <div rowspan="2">주말, 공휴일 </div>
+            <div>하절기(3-10월) {museumList[index].weekend_summer}</div>
+          </div>
+          <div>
+            <div>동절기(11-2월) {museumList[index].weekend_winter}</div>
+          </div>
+          <div>
+            <div>문화가 있는 날</div>
+            <div>{museumList[index].culture}</div>
+          </div>
+          <div>
+            <div>휴관</div>
+            <div>
+              {museumList[index].closed_day},{" "}
+              {museumList[index].regular_closing_day}(*정기휴관)
             </div>
           </div>
+          <div>
+            <div>입장 시간</div>
+            <div>{museumList[index].opening_hour}</div>
+          </div>
+          <div>
+            <div>입장 가격</div>
+            <div>{museumList[index].admission}</div>
+          </div>{" "}
+          <div>
+            <div>대표번호</div>
+            <div>{museumList[index].phone}</div>
+          </div>
         </div>
-        <div ref={mapRef} className="w-[30%] h-[60%]"></div>
       </div>
+      <div ref={mapRef} className="w-[30%] h-[60%] p-10 ml-[16%] hidden"></div>
     </div>
   );
 }

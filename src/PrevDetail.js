@@ -30,17 +30,12 @@ export default function PrevDetail({ dataPrev }) {
         event.target.parentElement.dataset.place,
         event.target.parentElement.dataset.start,
         event.target.parentElement.dataset.end,
-        event.target.parentElement.dataset.artpart,
-        event.target.parentElement.dataset.artcnt,
         event.target.parentElement.dataset.link,
       ]);
       if (event.target.parentElement.dataset.info.length > 700) {
         setModalTextInfo(
           event.target.parentElement.dataset.info.substr(0, 700) + "..."
         );
-      }
-      if (modalTextInfo.includes("<")) {
-        console.log(modalTextInfo.split("<"));
       }
       modalRef.current.classList.remove("hidden");
     }
@@ -82,7 +77,7 @@ export default function PrevDetail({ dataPrev }) {
           onClick={handleModalCloseBtn}
           size={25}
           color="white"
-          className="absolute top-[5%] left-[93%] z-[2] hover:cursor-pointer"
+          className="absolute top-[3%] left-[96%] z-[2] hover:cursor-pointer"
         />
         <div className="flex p-10">
           <div>
@@ -101,17 +96,11 @@ export default function PrevDetail({ dataPrev }) {
             <div className="z-[2] text-white ml-6">
               전시 기간 | {modalText[4]} ~ {modalText[5]}
             </div>
-            <div className="z-[2] text-white ml-6">
-              작품 장르 | {modalText[6]}
-            </div>
-            <div className="z-[2] text-white ml-6">
-              작품 개수 | {modalText[7]}
-            </div>
-            <div className="flex">
+            <div className="flex mt-5 mr-10">
               <div className="z-[2] text-white mt-5 ml-6 text-justify">
                 {modalTextInfo}
                 <a
-                  href={modalText[8]}
+                  href={modalText[6]}
                   target="_blank"
                   className="italic text-gray-500 hover:text-indigo-500"
                 >
@@ -120,7 +109,7 @@ export default function PrevDetail({ dataPrev }) {
               </div>
               <img
                 src={modalText[2]}
-                className="h-[300px] z-[2] mt-5 ml-6 bg-black"
+                className="h-[300px] z-[2] mt-5 ml-6 p-2"
               />
             </div>
           </div>
