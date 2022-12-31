@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { BiCaretLeft, BiMap, BiCheckSquare } from "react-icons/bi";
+import { FiLink } from "react-icons/fi";
 
 export default function Map() {
   const { index } = useParams();
   const mapRef = useRef(null);
   const infoRef = useRef();
+  const directionsRef = useRef();
 
   const museumList = {
     0: {
@@ -62,7 +64,6 @@ export default function Map() {
       name: "서울시립 미술아카이브",
       img: "https://sema.seoul.go.kr/common/imageView?FILE_PATH=%2Fit%2FITRA0%2F2022%2F&FILE_NM=20220107193547_a78150f14adc45e59931073ab6cf1115_bd44dfffbdf7489e86516580e822982b",
       description: "미술사의 발자취를 좇아 미술의 역사를 보존하고 연구합니다.",
-
       address: "서울시 종로구 평창문화로 101(평창동)",
       phone: "02-2133-4191",
       Lat: 37.6103289,
@@ -134,13 +135,73 @@ export default function Map() {
     },
   };
 
+  const directionsList = {
+    0: {
+      subway:
+        "1호선: 시청역 1번 출구 (서울시청 서소문청사 방면) / 2호선: 시청역 10, 11, 12번 출구 / 5호선: 서대문역 5번 출구 또는 광화문역 6번 출구",
+      bus: "파랑(간선)버스 172, 472, 600, 602번: '광화문' 또는 '시청 앞' 정류장에서 하차",
+      parking:
+        "주차 요금: 평일(월~금) 5분당 400원, 토요일 및 공휴일 5분당 300원",
+      link: "https://sema.seoul.go.kr/kr/visit/seosomun#museumHerecoms",
+    },
+    1: {
+      subway:
+        "7호선 하계역 1번 출구 도보 5분 거리에 등나무공원 내 / 7호선 중계역 3번 출구 도보 5분 거리에 등나무공원 내",
+      bus: "파랑(간선)버스: 100, 105, 146 / 초록(지선)버스: 1131, 1135, 1137, 1140 / 노랑(순환)버스: 15번 '서울시립 북서울미술관' 정류장에서 하차",
+      parking:
+        "주차 요금: 화~일요일 5분당 250원, 월요일 무료 / 운영시간: 09:00~22:00 (동절기(12월~2월) 및 토·일·공휴일 : 09:00~21:00)",
+      link: "https://sema.seoul.go.kr/kr/visit/bukseoul#museumHerecoms",
+    },
+    2: {
+      subway:
+        "2호선: 사당역 6번 출구에서 도보 1분 / 4호선: 사당역 4번 출구에서 도보 3분",
+      bus: "641, 5524번: ’남서울 농협 남현동지점‘ 정류장에서 하차 후 도보 6분 / 643, 8541번: '사당1동 관악시장 앞' 정류장에서 하차 후 도보 7분",
+      parking:
+        "미술관 내 주차 시설이 없으므로, 인근 사당 공영주차장을 이용하여 주시기 바랍니다.",
+      link: "https://sema.seoul.go.kr/kr/visit/namseoul#museumHerecoms",
+    },
+    3: {
+      link: "https://sema.seoul.go.kr/kr/visit/art_archive#museumHerecoms",
+    },
+    4: {
+      subway:
+        "2호선: 당산역 6, 7번 출구, 100m 직진 후 9707 버스 환승 / 6호선: 마포구청역 1번 출구, 271, 7011 버스 환승",
+      bus: "광역버스 9707번: ‘난지한강공원’ 정류장에서 하차, 도보 3분 / 271, 6715번: ‘월드컵파크 3단지 정문’ 정류장에서 하차, 난지천공원 가로질러 도보 15분 / 172, 670, 7011, 7016, 7019번: '월드컵파크 3단지, 난지천공원' 정류장에서 하차, 난지천공원 가로질러 도보 15분",
+      parking: "주차장은 A동과 B동 사이에 있습니다.",
+      link: "https://sema.seoul.go.kr/kr/visit/nanji_residency#museumHerecoms",
+    },
+    5: {
+      subway:
+        "5, 9호선: 여의도역 3번 출구에서 도보 7분 (3번 출구에서 200m 직진 후 여의도 공원 앞 교차로에서 우회전하여 200m 직진 (엘리베이터를 지나 여의도 환승센터 방면으로 약 100m 직진하시면 신설 계단이 있습니다.)",
+      bus: "여의도 환승센터(정류장번호: 19-007, 19-008, 19-016, 19-017)에서 하차",
+      parking: "※ 주차 공간이 없으니 대중교통을 이용하여 주시기 바랍니다.",
+      link: "https://sema.seoul.go.kr/kr/visit/sema_bunker#museumHerecoms",
+    },
+    6: {
+      subway:
+        "3, 6호선: 불광역 2번 출구에서 도보 7분 (2번 출구 앞의 횡단보도를 건넌 뒤, 녹번 파출소를 지나 100m 직진한 후 왼쪽에 있는 정문으로 들어오시면, 서울혁신파크입니다.)",
+      bus: "불광역 불광1동주민센터 정류장(701, 704, 705, 708, 720, 741, 774, 7720, 9703, 9709)에서 하차",
+      parking:
+        "주차 요금: 현재 임시 무료 (주차 공간이 협소하니 가급적 대중교통을 이용해주시기 바랍니다.)",
+      link: "https://sema.seoul.go.kr/kr/visit/sema_warehouse#museumHerecoms",
+    },
+    7: {
+      subway:
+        "1, 6호선: 동묘앞역 8번 출구에서 도보 3분 / 1, 4호선: 동대문역 3번 출구에서 도보 3분 (우리농산물마트와 BYC 사이의 종로53길로 진입 후 골목을 따라 우측으로 진입)",
+      bus: "'동대문 흥인지문'(정류장 번호: 01-037), '동대문'(01-233), '동묘'(01-595) 정류장에서 하차",
+      parking:
+        "※ 기념관 내 주차시설이 없으므로, 인근 주차장을 이용하여 주시기 바랍니다",
+      link: "https://sema.seoul.go.kr/kr/visit/nam_june_paik_house#museumHerecoms",
+    },
+  };
+  console.log(directionsList[0].subway[0]);
   const handleInfoClick = () => {
     infoRef.current.classList.remove("hidden");
-    mapRef.current.classList.add("hidden");
+    directionsRef.current.classList.add("hidden");
   };
 
   const handleMapClick = () => {
-    mapRef.current.classList.remove("hidden");
+    directionsRef.current.classList.remove("hidden");
     infoRef.current.classList.add("hidden");
   };
 
@@ -163,7 +224,7 @@ export default function Map() {
   }, []);
 
   return (
-    <div className="w-[100vw] h-[100vh]">
+    <div className="w-[100%] h-[100vh]">
       <div className="bg-black w-[16%] h-[100%] fixed pb-3">
         <Link to="/">
           <div className="flex items-center my-3">
@@ -187,10 +248,10 @@ export default function Map() {
           className="flex items-center my-3 hover:cursor-pointer"
         >
           <BiMap color="white" size={27} className="ml-2 mr-1" />
-          <div className="text-white ">지도</div>
+          <div className="text-white">방문 안내</div>
         </div>
       </div>
-      <div className="p-10 ml-[16%]">
+      <div className="p-10 ml-[16%] w-[84%]">
         <div className="flex">
           <div className="w-2 h-22 bg-black mr-5"></div>
           <div>
@@ -198,49 +259,129 @@ export default function Map() {
             <div className="text-base">{museumList[index].description}</div>
           </div>
         </div>
-        <div className="mt-9 flex" ref={infoRef}>
+        <div className="mt-9 flex w-[100%] h-[100%]" ref={infoRef}>
           <img
             src={museumList[index].img}
             className="w-[500px] h-[500px] object-cover bg-white p-2 drop-shadow-lg"
           />
-          <div>이용 시간</div>
-          <div>
-            <div>화요일 - 금요일</div>
-            <div>{museumList[index].weekday}</div>
-          </div>
-          <div>
-            <div rowspan="2">주말, 공휴일 </div>
-            <div>하절기(3-10월) {museumList[index].weekend_summer}</div>
-          </div>
-          <div>
-            <div>동절기(11-2월) {museumList[index].weekend_winter}</div>
-          </div>
-          <div>
-            <div>문화가 있는 날</div>
-            <div>{museumList[index].culture}</div>
-          </div>
-          <div>
-            <div>휴관</div>
-            <div>
-              {museumList[index].closed_day},{" "}
-              {museumList[index].regular_closing_day}(*정기휴관)
+          {index !== "3" ? (
+            <div className="p-3 ml-7">
+              <div className="mb-3">
+                <div className="font-bold">| 이용 시간</div>
+                <div>
+                  <span className="font-bold">화요일 - 금요일 </span>
+                  {museumList[index].weekday}
+                </div>
+                <div>
+                  <span className="font-bold">주말, 공휴일 </span>
+                  {museumList[index].weekend_summer !== undefined ? (
+                    <span>
+                      하절기(3-10월) {museumList[index].weekend_summer} /
+                      동절기(11-2월) {museumList[index].weekend_winter}{" "}
+                    </span>
+                  ) : (
+                    <span>{museumList[index].weekend}</span>
+                  )}
+                </div>
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 휴관</div>
+                <div className="flex">
+                  <div>
+                    {museumList[index].closed_day},{" "}
+                    {museumList[index].regular_closing_day}(*정기휴관)
+                  </div>
+                </div>
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 입장 시간</div>
+                <div>{museumList[index].opening_hour}</div>
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 입장 가격</div>
+                <div>{museumList[index].admission}</div>
+              </div>{" "}
+              <div className="mb-3">
+                <div className="font-bold">| 대표 번호</div>
+                <div>{museumList[index].phone}</div>
+              </div>
             </div>
-          </div>
-          <div>
-            <div>입장 시간</div>
-            <div>{museumList[index].opening_hour}</div>
-          </div>
-          <div>
-            <div>입장 가격</div>
-            <div>{museumList[index].admission}</div>
-          </div>{" "}
-          <div>
-            <div>대표번호</div>
-            <div>{museumList[index].phone}</div>
-          </div>
+          ) : (
+            <div className="p-12 ml-3">
+              <div className="mb-3 text-lg text-justify">
+                <span className="font-bold">미술아카이브</span>는 미술의 역사를
+                보존하고 연구하는 미술관입니다. 미술아카이브는 예술인 개인과
+                단체가 남긴 미술사의 발자취를 좇아 수많은 기록과 자료를 수집
+                선별하여 보존하고 연구합니다. 또한 아카이브를 매개로 한
+                프로그램을 통해 다양한 사용자들과 관계를 맺고, 새로운 예술을
+                상상합니다.{" "}
+                <span className="italic">(2023년 3월 개관 예정)</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      <div ref={mapRef} className="w-[30%] h-[60%] p-10 ml-[16%] hidden"></div>
+      <div ref={directionsRef} className="w-[84%] ml-[16%] hidden">
+        <div className="flex w-[100%]">
+          <div
+            ref={mapRef}
+            className="w-[500px] h-[500px] ml-10 mr-3 drop-shadow-lg"
+          ></div>
+          {index !== "3" ? (
+            <div className="w-[50%] p-3 ml-7">
+              <div className="mb-3">
+                <div className="font-bold">| 주소 </div>
+                {museumList[index].address}
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 지하철 이용 안내</div>
+                {directionsList[index].subway}
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 버스 이용 안내</div>
+                {directionsList[index].bus}
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 주차장 이용 안내</div>
+                {directionsList[index].parking}
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 상세 안내 </div>
+                <div className="hover:text-indigo-500 hover:cursor-pointer">
+                  <a
+                    className="flex items-center"
+                    href={directionsList[index].link}
+                    target="_blank"
+                  >
+                    <FiLink className="mr-1" />
+                    <span>홈페이지 바로가기</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="w-[50%] p-3 ml-7">
+              <div className="mb-3">
+                <div className="font-bold">| 주소 </div>
+                {museumList[index].address}
+              </div>
+              <div className="mb-3">
+                <div className="font-bold">| 상세 안내 </div>
+                <div className="hover:text-indigo-500 hover:cursor-pointer">
+                  <a
+                    className="flex items-center"
+                    href={directionsList[index].link}
+                    target="_blank"
+                  >
+                    <FiLink className="mr-1" />
+                    <span>홈페이지 바로가기</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
