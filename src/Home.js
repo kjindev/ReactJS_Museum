@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect } from "react";
+import React, { useRef, useEffect, useLayoutEffect } from "react";
 import { FiChevronsUp } from "react-icons/fi";
 import NavBar from "./components/NavBar";
 import Now from "./components/Now";
@@ -14,6 +14,24 @@ export default function Home({
   dataPrevBanner2,
 }) {
   const scrollRef = useRef([]);
+
+  const callback = (entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        console.log(scrollRef.current);
+      }
+    });
+  };
+
+  const observer = new IntersectionObserver(callback, {
+    theshold: 0.2,
+  });
+
+  useEffect(() => {
+    scrollRef.current.forEach((el) => {
+      observer.observe(el);
+    });
+  }, [window.screenY]);
 
   useLayoutEffect(() => {
     window.scroll(0, sessionStorage.y);
@@ -41,19 +59,19 @@ export default function Home({
         <div>Loading...</div>
       ) : (
         <div>
-          <div ref={(el) => (scrollRef.current[0] = el)}>
+          <div ref={(el) => (scrollRef.current[0] = el)} data-name="intro">
             <Intro />
           </div>
-          <div ref={(el) => (scrollRef.current[1] = el)}>
+          <div ref={(el) => (scrollRef.current[1] = el)} data-name="now">
             <Now dataNow={dataNow} />
           </div>
-          <div ref={(el) => (scrollRef.current[2] = el)}>
+          <div ref={(el) => (scrollRef.current[2] = el)} data-name="prev">
             <Prev
               dataPrevBanner={dataPrevBanner}
               dataPrevBanner2={dataPrevBanner2}
             />
           </div>
-          <div ref={(el) => (scrollRef.current[3] = el)}>
+          <div ref={(el) => (scrollRef.current[3] = el)} data-name="location">
             <Location />
           </div>
           <div>

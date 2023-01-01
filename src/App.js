@@ -4,7 +4,6 @@ import Home from "./Home";
 import NowDetail from "./NowDetail";
 import PrevDetail from "./PrevDetail";
 import Map from "./Map";
-import { FiChevronsUp } from "react-icons/fi";
 
 function App() {
   const [dataNow, setDataNow] = useState([]);
@@ -32,8 +31,8 @@ function App() {
 
   const date = new Date();
   const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
 
   useEffect(() => {
     async function getData() {
@@ -64,10 +63,30 @@ function App() {
               ""
             );
           }
-          if (data[i].DP_END >= `${year}-${month}-${day}`) {
-            dataNow.push(data[i]);
+          if (month < 10 && day < 10) {
+            if (data[i].DP_END >= `${year}-0${month}-0${day}`) {
+              dataNow.push(data[i]);
+            } else {
+              dataPrev.push(data[i]);
+            }
+          } else if (month < 10 && day >= 10) {
+            if (data[i].DP_END >= `${year}-0${month}-${day}`) {
+              dataNow.push(data[i]);
+            } else {
+              dataPrev.push(data[i]);
+            }
+          } else if (month >= 10 && day < 10) {
+            if (data[i].DP_END >= `${year}-${month}-0${day}`) {
+              dataNow.push(data[i]);
+            } else {
+              dataPrev.push(data[i]);
+            }
           } else {
-            dataPrev.push(data[i]);
+            if (data[i].DP_END >= `${year}-${month}-${day}`) {
+              dataNow.push(data[i]);
+            } else {
+              dataPrev.push(data[i]);
+            }
           }
         }
         setIsLoading(false);

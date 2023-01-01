@@ -194,7 +194,7 @@ export default function Map() {
       link: "https://sema.seoul.go.kr/kr/visit/nam_june_paik_house#museumHerecoms",
     },
   };
-  console.log(directionsList[0].subway[0]);
+
   const handleInfoClick = () => {
     infoRef.current.classList.remove("hidden");
     directionsRef.current.classList.add("hidden");
@@ -265,7 +265,7 @@ export default function Map() {
             className="w-[500px] h-[500px] object-cover bg-white p-2 drop-shadow-lg"
           />
           {index !== "3" ? (
-            <div className="p-3 ml-7">
+            <div className="p-3 ml-7 mt-1">
               <div className="mb-3">
                 <div className="font-bold">| 이용 시간</div>
                 <div>
@@ -325,7 +325,7 @@ export default function Map() {
         <div className="flex w-[100%]">
           <div
             ref={mapRef}
-            className="w-[500px] h-[500px] ml-10 mr-3 drop-shadow-lg"
+            className="w-[500px] h-[500px] ml-10 p-2 drop-shadow-lg"
           ></div>
           {index !== "3" ? (
             <div className="w-[50%] p-3 ml-7">

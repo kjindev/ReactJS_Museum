@@ -5,7 +5,6 @@ import { BsXCircle } from "react-icons/bs";
 
 export default function PrevDetail({ dataPrev }) {
   const [searchText, setSearchText] = useState("");
-  const [submitText, setSubmitText] = useState("");
   const [dataLoading, setdataLoading] = useState(true);
   const { pathname } = useLocation();
   const dataRef = useRef([]);
@@ -36,6 +35,8 @@ export default function PrevDetail({ dataPrev }) {
         setModalTextInfo(
           event.target.parentElement.dataset.info.substr(0, 700) + "..."
         );
+      } else {
+        setModalTextInfo(event.target.parentElement.dataset.info + ` `);
       }
       modalRef.current.classList.remove("hidden");
     }
@@ -47,17 +48,16 @@ export default function PrevDetail({ dataPrev }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setSubmitText(searchText);
     for (let i = 0; i < dataPrev.length; i++) {
       dataRef.current.children[i].classList.remove("hidden");
       if (
-        dataRef.current.children[i].innerText.includes(submitText) === false &&
+        dataRef.current.children[i].innerText.includes(searchText) === false &&
         dataRef.current.children[i].children[2].innerText.includes(
-          submitText
+          searchText
         ) === false
       ) {
         dataRef.current.children[i].classList.add("hidden");
-      } else if (submitText === "") {
+      } else if (searchText === "") {
         dataRef.current.children[i].classList.remove("hidden");
       }
     }
@@ -136,7 +136,7 @@ export default function PrevDetail({ dataPrev }) {
             <input
               value={searchText}
               onChange={handleTextChange}
-              placeholder="검색하기"
+              placeholder="제목, 이름으로 검색"
               className="w-[100%] h-7 py-4 px-3 mr-5 bg-black border border-white text-white"
             />
           </form>

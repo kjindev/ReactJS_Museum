@@ -34,12 +34,14 @@ export default function DPNow({ dataNow }) {
           className="absolute top-[50%] left-[10%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
         />
       )}
-      <div className="overflow-hidden relative pt-12 bg-gray-100">
+      <div className="overflow-hidden h-[100%] relative pt-12 bg-gray-100">
         <div className="flex absolute top-[5%] left-[3%] z-[1] pt-10">
           <div className="w-2 h-12 bg-black mr-5"></div>
           <div className="text-5xl">현재 전시</div>
         </div>
-        {dataNow && (
+        {dataNow.length === 0 ? (
+          <div>Loading...</div>
+        ) : (
           <div className="flex flex-row w-[700vw]">
             {dataNow.map((item, index) => (
               <div

@@ -9,6 +9,8 @@ function DPNowDetail({ dataNow }) {
   useEffect(() => {
     if (dataNow[index].DP_INFO.length > 800) {
       setInfoText(dataNow[index].DP_INFO.substr(0, 800) + "...");
+    } else {
+      setInfoText(dataNow[index].DP_INFO);
     }
   }, []);
 
