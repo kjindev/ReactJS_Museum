@@ -18,20 +18,19 @@ export default function Home({
   const callback = (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        console.log(scrollRef.current);
+        console.log(entry.target);
       }
     });
   };
 
-  const observer = new IntersectionObserver(callback, {
-    theshold: 0.2,
-  });
+  const options = { threshold: 0.5 };
+
+  const observer = new IntersectionObserver(callback, options);
 
   useEffect(() => {
-    scrollRef.current.forEach((el) => {
-      observer.observe(el);
-    });
-  }, [window.screenY]);
+    console.log(scrollRef.current);
+    scrollRef.current.forEach((el) => observer.observe(el));
+  }, [window.scrollY]);
 
   useLayoutEffect(() => {
     window.scroll(0, sessionStorage.y);
