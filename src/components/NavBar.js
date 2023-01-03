@@ -2,8 +2,9 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FiChevronRight } from "react-icons/fi";
 
-function NavBar({ handleScrollView }) {
-  const textStyle = "ml-5 cursor-pointer hover:text-zinc-400 text-base";
+function NavBar({ handleScrollView, navName }) {
+  const textStyle = "pl-5 cursor-pointer hover:text-indigo-300 text-base";
+  const textStyleHover = "pl-5 cursor-pointer text-indigo-500 text-base";
   const { pathname } = useLocation();
 
   return (
@@ -11,10 +12,18 @@ function NavBar({ handleScrollView }) {
       <div className="text-base">서울시립미술관 전시안내</div>
       {pathname === "/" ? (
         <div className="flex flex-row" onClick={handleScrollView}>
-          <div className={textStyle}>MAIN</div>
-          <div className={textStyle}>현재 전시</div>
-          <div className={textStyle}>지난 전시</div>
-          <div className={textStyle}>방문하기</div>
+          <div className={navName === "intro" ? textStyleHover : textStyle}>
+            MAIN
+          </div>
+          <div className={navName === "now" ? textStyleHover : textStyle}>
+            현재 전시
+          </div>
+          <div className={navName === "prev" ? textStyleHover : textStyle}>
+            지난 전시
+          </div>
+          <div className={navName === "location" ? textStyleHover : textStyle}>
+            방문하기
+          </div>
         </div>
       ) : (
         <Link to="/">

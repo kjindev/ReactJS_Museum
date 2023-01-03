@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { FiChevronsUp } from "react-icons/fi";
 import NavBar from "./components/NavBar";
 import Now from "./components/Now";
@@ -6,32 +6,16 @@ import Intro from "./components/Intro";
 import Prev from "./components/Prev";
 import Location from "./components/Location";
 import Information from "./components/Information";
+import { useLocation } from "react-router-dom";
 
 export default function Home({
   isLoading,
   dataNow,
   dataPrevBanner,
   dataPrevBanner2,
+  scrollRef,
+  navName,
 }) {
-  const scrollRef = useRef([]);
-
-  const callback = (entries, observer) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        console.log(entry.target);
-      }
-    });
-  };
-
-  const options = { threshold: 0.5 };
-
-  const observer = new IntersectionObserver(callback, options);
-
-  useEffect(() => {
-    console.log(scrollRef.current);
-    scrollRef.current.forEach((el) => observer.observe(el));
-  }, [window.scrollY]);
-
   useLayoutEffect(() => {
     window.scroll(0, sessionStorage.y);
   }, []);
@@ -52,25 +36,29 @@ export default function Home({
   };
 
   return (
-    <div onClick={() => sessionStorage.setItem("y", window.pageYOffset)}>
-      <NavBar handleScrollView={handleScrollView} />
+    <div
+      onClick={(event) => {
+        sessionStorage.setItem("y", window.pageYOffset);
+      }}
+    >
+      <NavBar handleScrollView={handleScrollView} navName={navName} />
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <div>
-          <div ref={(el) => (scrollRef.current[0] = el)} data-name="intro">
+          <div ref={(el) => (scrollRef.current[0] = el)} id="intro">
             <Intro />
           </div>
-          <div ref={(el) => (scrollRef.current[1] = el)} data-name="now">
+          <div ref={(el) => (scrollRef.current[1] = el)} id="now">
             <Now dataNow={dataNow} />
           </div>
-          <div ref={(el) => (scrollRef.current[2] = el)} data-name="prev">
+          <div ref={(el) => (scrollRef.current[2] = el)} id="prev">
             <Prev
               dataPrevBanner={dataPrevBanner}
               dataPrevBanner2={dataPrevBanner2}
             />
           </div>
-          <div ref={(el) => (scrollRef.current[3] = el)} data-name="location">
+          <div ref={(el) => (scrollRef.current[3] = el)} id="location">
             <Location />
           </div>
           <div>
