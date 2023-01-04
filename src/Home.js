@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import { FiChevronsUp } from "react-icons/fi";
 import NavBar from "./components/NavBar";
 import Now from "./components/Now";
@@ -6,7 +6,6 @@ import Intro from "./components/Intro";
 import Prev from "./components/Prev";
 import Location from "./components/Location";
 import Information from "./components/Information";
-import { useLocation } from "react-router-dom";
 
 export default function Home({
   isLoading,
@@ -15,6 +14,7 @@ export default function Home({
   dataPrevBanner2,
   scrollRef,
   navName,
+  isWindow,
 }) {
   useLayoutEffect(() => {
     window.scroll(0, sessionStorage.y);
@@ -37,11 +37,16 @@ export default function Home({
 
   return (
     <div
-      onClick={(event) => {
+      onClick={() => {
         sessionStorage.setItem("y", window.pageYOffset);
       }}
+      className="w-[100%]"
     >
-      <NavBar handleScrollView={handleScrollView} navName={navName} />
+      <NavBar
+        handleScrollView={handleScrollView}
+        navName={navName}
+        isWindow={isWindow}
+      />
       {isLoading ? (
         <div>Loading...</div>
       ) : (
@@ -70,7 +75,7 @@ export default function Home({
         onClick={handleScrollTop}
         size={30}
         color="gray"
-        className="fixed top-[92%] left-[95%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
+        className="fixed top-[92%] left-[90%] translate-x-[-50%] translate-y-[-50%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
       />
     </div>
   );

@@ -29,15 +29,15 @@ export default function DPNow({ dataNow }) {
       {prevButtomVisible && (
         <FiChevronLeft
           size={40}
-          color="gray"
+          color="black"
           onClick={() => setSlideIndex(parseInt(slideIndex - 1))}
-          className="absolute top-[50%] left-[10%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
+          className="absolute lg:top-[50%] top-[85%] left-[10%]  translate-x-[-50%] translate-y-[-50%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
         />
       )}
-      <div className="overflow-hidden h-[100%] relative pt-12 bg-gray-100">
-        <div className="flex absolute top-[5%] left-[3%] z-[1] pt-10">
-          <div className="w-2 h-12 bg-black mr-5"></div>
-          <div className="text-5xl">현재 전시</div>
+      <div className="overflow-hidden h-[100%] relative pt-[12%] bg-gray-100">
+        <div className="pt-10 flex items-center lg:absolute lg:top-[5%] lg:left-[3%] z-[1]">
+          <div className="lg:w-2 lg:h-12 w-1 h-9 bg-black mr-5"></div>
+          <div className="lg:text-5xl text-3xl">현재 전시</div>
         </div>
         {dataNow.length === 0 ? (
           <div>Loading...</div>
@@ -48,17 +48,19 @@ export default function DPNow({ dataNow }) {
                 key={index}
                 style={{
                   transform: `translateX(-${slideIndex * 100}vw)`,
-                  transitionDuration: "1s",
+                  transitionDuration: "0.7s",
                 }}
-                className="relative w-[100vw] h-[100vh]"
+                className="lg:relative w-[100vw] h-[100vh] m-5"
               >
                 <img
                   src={item.DP_MAIN_IMG}
-                  className="absolute top-[50%] left-[30%] translate-x-[-50%] translate-y-[-50%] drop-shadow-2xl object-cover w-[25%] h-[50%]"
+                  className="lg:absolute lg:top-[50%] lg:left-[30%] lg:translate-x-[-50%] lg:translate-y-[-50%] lg:w-[25%] lg:h-[50%] w-[100%] h-[30%] drop-shadow-2xl object-cover"
                 />
-                <div className="absolute flex flex-col top-[28%] left-[49%] w-[35%]">
-                  <div className="title text-5xl pb-7">{item.DP_NAME}</div>
-                  <div>
+                <div className="lg:absolute lg:top-[28%] lg:left-[49%] lg:w-[35%] w-[100%] m-3">
+                  <div className="title lg:text-5xl text-xl pb-7">
+                    {item.DP_NAME}
+                  </div>
+                  <div className="lg:text-base text-xs">
                     <div className="pb-3">
                       <span className="font-bold">ARTIST</span> |{" "}
                       {item.DP_ARTIST}
@@ -72,10 +74,10 @@ export default function DPNow({ dataNow }) {
                     </div>
                   </div>
                 </div>
-                <div className="absolute top-[65%] left-[49%]">
+                <div className="absolute lg:top-[68%] lg:left-[49%] translate-x-[-50%] translate-y-[-50%] top-[60%] left-[50%] pl-2">
                   <Link
                     to={`NowDetail/${index}`}
-                    className="border border-black p-3 px-7 hover:bg-black hover:text-white"
+                    className="border border-black p-3 px-7 hover:bg-black hover:text-white text-xs"
                     onClick={() =>
                       sessionStorage.setItem("slideIndex", slideIndex)
                     }
@@ -91,9 +93,9 @@ export default function DPNow({ dataNow }) {
       {nextButtomVisible && (
         <FiChevronRight
           size={40}
-          color="gray"
+          color="black"
           onClick={() => setSlideIndex(parseInt(slideIndex + 1))}
-          className="absolute top-[50%] left-[90%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
+          className="absolute translate-x-[-50%] translate-y-[-50%]  lg:top-[50%] top-[85%] left-[90%] z-[1] hover:bg-zinc-200 hover:cursor-pointer rounded-lg"
         />
       )}
     </div>

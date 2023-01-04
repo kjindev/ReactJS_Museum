@@ -63,3 +63,16 @@ body {
     transform: translate(0, 0);
   }
 }
+
+.fadeAnimation {
+  animation: fadeOut 1s linear forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

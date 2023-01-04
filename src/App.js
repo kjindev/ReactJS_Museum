@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import NowDetail from "./NowDetail";
 import PrevDetail from "./PrevDetail";
@@ -9,12 +9,16 @@ function App() {
   const [dataNow, setDataNow] = useState([]);
   const [dataPrev, setDataPrev] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isWindow, setIsWindow] = useState(false);
 
   const dataPrevBanner = [];
   const dataPrevBanner2 = [];
 
   const scrollRef = useRef([]);
 
+  const [navName, setNavName] = useState("intro");
+
+  const options = { threshold: 0.5 };
   const callback = (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -23,11 +27,7 @@ function App() {
     });
   };
 
-  const options = { threshold: 0.5 };
   const observer = new IntersectionObserver(callback, options);
-  const [navName, setNavName] = useState("intro");
-
-  const [isWindow, setIsWindow] = useState(false);
 
   useEffect(() => {
     if (typeof window !== undefined) {
@@ -39,7 +39,6 @@ function App() {
     if (scrollRef.current[0] !== null) {
       scrollRef.current.forEach((el) => observer.observe(el));
     }
-    //console.log(scrollRef.current);
   };
 
   if (isWindow) {
@@ -142,6 +141,7 @@ function App() {
               dataPrevBanner2={dataPrevBanner2}
               scrollRef={scrollRef}
               navName={navName}
+              isWindow={isWindow}
             />
           }
         />
