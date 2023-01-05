@@ -38,25 +38,23 @@ export default function Location() {
   ];
 
   return (
-    <div className="w-[100%] h-[100vh] lg:relative bg-gray-100 pt-12 pb-[7%]">
-      <div className="flex pl-[7%] pb-[2%] lg:absolute lg:top-[5%] lg:left-[3%] z-[1]">
-        <div className="lg:w-2 lg:h-12 w-1 h-9 bg-black mr-5"></div>
-        <div className="lg:text-5xl text-3xl">방문하기</div>
+    <div className="w-[100%] h-[100vh] relative bg-gray-100 flex flex-row flex-wrap content-start justify-center pt-[10%]">
+      <div className="flex absolute top-[5%] left-[3%] z-[1] pt-10">
+        <div className="w-2 h-12 bg-black mr-5"></div>
+        <div className="text-5xl">방문하기</div>
       </div>
-      <div className="h-[20%] flex flex-wrap content-start justify-center">
-        {museumName.map((item, index) => (
-          <div key={index} className="w-[40%] h-[100%] lg:h-[85%] m-3">
-            <Link to={`Map/${index}`}>
-              <div className="w-[100%] h-[100%] lg:h-[85%] flex flex-col bg-white px-2 pt-2 drop-shadow-lg hover:scale-105 duration-100">
-                <img src={item.img} className="w-[100%] h-[85%] object-cover" />
-                <div className="w-[100%] font-bold text-end pt-1 text-sm lg:text-lg">
-                  {item.name}
-                </div>
+      {museumName.map((item, index) => (
+        <div key={index} className="w-[20%] h-[40%] m-3">
+          <Link to={`Map/${index}`}>
+            <div className="w-[100%] h-[100%] bg-white px-2 pt-2 drop-shadow-lg hover:scale-105 duration-100">
+              <img src={item.img} className="w-[100%] h-[85%] object-cover" />
+              <div className="w-[100%] font-bold text-end pt-1">
+                {item.name}
               </div>
-            </Link>
-          </div>
-        ))}
-      </div>
+            </div>
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }

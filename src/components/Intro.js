@@ -9,27 +9,22 @@ export default function Intro() {
   ];
 
   return (
-    <div className="w-[100%] h-[100vh] pt-12 p-4">
-      <div className="relative">
-        <div className="flex flex-wrap justify-center content-start mb-7">
+    <div className="h-[100vh] px-20 pt-[6%]">
+      <div className="relative flex flex-col">
+        <div className="flex flex-row justify-center mb-11">
           {imgLink.map((item, index) => (
-            <div
-              className="flex justify-center drop-shadow-lg w-[50%] h-[30%] p-1"
-              key={index}
-            >
+            <div className="flex justify-center drop-shadow-lg" key={index}>
               <img
                 src={item}
                 loading="lazy"
-                className="w-[100%] h-[180px] object-cover"
+                className="w-[100%] h-[100%] p-8 object-cover"
               />
             </div>
           ))}
         </div>
-        <div className="lg:absolute lg:top-[95%] lg:left-9">
-          <div className="lg:text-7xl text-5xl mb-5">
-            서울시립미술관 전시안내
-          </div>
-          <div className="lg:text-2xl text-base">
+        <div className="absolute top-[95%] left-9">
+          <div className="text-7xl mb-5">서울시립미술관 전시안내</div>
+          <div className="text-2xl">
             <div className="mb-1">시대와 미술의 변화에 부응하고</div>
             <div>서로를 채우며 성장해 가는 네트워크 미술관</div>
           </div>

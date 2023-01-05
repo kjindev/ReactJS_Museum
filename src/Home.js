@@ -17,11 +17,15 @@ export default function Home({
   isWindow,
 }) {
   useLayoutEffect(() => {
-    window.scroll(0, sessionStorage.y);
+    if (isWindow) {
+      window.scroll(0, sessionStorage.y);
+    }
   }, []);
 
   const handleScrollTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (isWindow) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   const handleScrollView = (event) => {
@@ -75,7 +79,7 @@ export default function Home({
         onClick={handleScrollTop}
         size={30}
         color="gray"
-        className="fixed top-[92%] left-[90%] translate-x-[-50%] translate-y-[-50%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
+        className="fixed top-[92%] left-[95%] translate-x-[-50%] translate-y-[-50%] drop-shadow-lg bg-white hover:bg-gray-300 hover:cursor-pointer rounded-full z-[2] w-[40px] h-[30px]"
       />
     </div>
   );
